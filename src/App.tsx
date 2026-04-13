@@ -1,13 +1,16 @@
 import "./App.css";
 import React from "react";
 // import Products from "./pages/Products";
-import PrimarySearchAppBar from "./pages/HomePage";
+import HomePage from "./pages/HomePage";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div>
-      <PrimarySearchAppBar />
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      {/* <Route path="/profile" element={<About />} /> */}
+      {/* <Route path="/contact" element={<Contact />} /> */}
+    </Routes>
   );
 }
 
