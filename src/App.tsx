@@ -1,7 +1,14 @@
 import "./App.css";
+import React from "react";
+// import Products from "./pages/Products";
+import PrimarySearchAppBar from "./pages/HomePage";
 
 function App() {
-  return <h1>Hello!</h1>;
+  return (
+    <div>
+      <PrimarySearchAppBar />
+    </div>
+  );
 }
 
 export default App;
