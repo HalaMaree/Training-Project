@@ -8,10 +8,16 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { type SelectChangeEvent } from "@mui/material/Select";
 
-export default function Filters() {
-  const [categories, setCategories] = useState<Category[]>([]);
+type FiltersProps = {
+  selectedCategory: string;
+  setSelectedCategory: (category: string) => void;
+};
 
-  const [selectedCategory, setSelectedCategory] = React.useState("");
+export default function Filters({
+  selectedCategory,
+  setSelectedCategory,
+}: FiltersProps) {
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedCategory(event.target.value);

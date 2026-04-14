@@ -7,7 +7,13 @@ import type { Product } from "../context/Product.ts";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-export default function Products() {
+export default function Products({
+  selectedCategory,
+  searchTerm,
+}: {
+  selectedCategory: string;
+  searchTerm: string;
+}) {
   const [products, setProducts] = useState<Product[]>([]);
 
   const theme = useTheme();
@@ -17,10 +23,20 @@ export default function Products() {
   const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
 
   useEffect(() => {
-    productService.getProducts().then((data: { products: Product[] }) => {
-      setProducts(data.products);
-    });
-  }, []);
+    if (searchTerm) {
+      productService.getProductsBySearchTerm(searchTerm).then((data) => {
+        setProducts(data.products);
+      });
+    } else if (selectedCategory) {
+      productService.getProductsByCategory(selectedCategory).then((data) => {
+        setProducts(data.products);
+      });
+    } else {
+      productService.getProducts().then((data) => {
+        setProducts(data.products);
+      });
+    }
+  }, [selectedCategory, searchTerm]);
 
   const getCardSize = () => {
     if (isXs) return { width: 160, height: 350 };

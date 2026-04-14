@@ -10,7 +10,7 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -52,12 +52,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
-  // const navigate = useNavigate();
+export default function PrimarySearchAppBar({
+  setSearchTerm,
+}: {
+  setSearchTerm: (term: string) => void;
+}) {
+  const navigate = useNavigate();
 
   const goToProfile = () => {
     console.log("Navigating to profile...");
-    // navigate("/profile");
+    navigate("/profile");
   };
 
   return (
@@ -84,6 +88,7 @@ export default function PrimarySearchAppBar() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />

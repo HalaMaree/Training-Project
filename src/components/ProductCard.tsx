@@ -15,7 +15,6 @@ export default function ProductCard({
   width: number;
   height: number;
 }) {
-  console.log(product.title);
   return (
     <Card sx={{ width: width, height: height }}>
       <CardMedia
