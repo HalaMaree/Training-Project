@@ -4,13 +4,21 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthenticationContext } from "../context/AuthenticationContext";
+import Link from "@mui/material/Link";
+
+type HeaderProps = {
+  setSearchTerm?: (term: string) => void;
+  page: string;
+};
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -54,21 +62,75 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar({
   setSearchTerm,
-}: {
-  setSearchTerm: (term: string) => void;
-}) {
+  page,
+}: HeaderProps) {
   const navigate = useNavigate();
+  const { user } = useContext(AuthenticationContext);
 
-  const goToProfile = () => {
-    console.log("Navigating to profile...");
-    navigate("/profile");
-  };
-
-  return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ backgroundColor: "#00ADB5" }}>
-        <Toolbar>
-          <Typography
+  if (page === "home") {
+    return (
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="fixed" sx={{ backgroundColor: "#00ADB5" }}>
+          <Toolbar>
+            <Link
+              underline="none"
+              color="inherit"
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{
+                display: { xs: "none", sm: "block" },
+                fontFamily: "playwrite IE, sans-serif",
+                ml: 6,
+                mr: 4,
+              }}
+              onClick={() => navigate("/")}
+            >
+              E-Commerce
+            </Link>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+                onChange={(e) => setSearchTerm?.(e.target.value)}
+              />
+            </Search>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box>
+              {user ? (
+                <IconButton
+                  onClick={() => navigate("/profile")}
+                  color="inherit"
+                >
+                  <img
+                    src={user.image || "/default-avatar.png"}
+                    alt="profile"
+                    style={{ width: 35, height: 35, borderRadius: "50%" }}
+                  />
+                </IconButton>
+              ) : (
+                <IconButton onClick={() => navigate("/login")} color="inherit">
+                  <AccountCircle />
+                </IconButton>
+              )}
+            </Box>
+          </Toolbar>
+        </AppBar>
+      </Box>
+    );
+  } else if (page === "login" || page === "profile") {
+    return (
+      <Box sx={{ flexGrow: 2 }}>
+        <AppBar
+          position="fixed"
+          sx={{ backgroundColor: "#00ADB5", p: "16px", pl: "25px" }}
+        >
+          <Link
+            underline="none"
+            color="inherit"
             variant="h6"
             noWrap
             component="div"
@@ -78,36 +140,12 @@ export default function PrimarySearchAppBar({
               ml: 6,
               mr: 4,
             }}
+            onClick={() => navigate("/")}
           >
             E-Commerce
-          </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              // aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={goToProfile}
-              color="inherit"
-              sx={{ mr: 2 }}
-            >
-              <AccountCircle />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-    </Box>
-  );
+          </Link>
+        </AppBar>
+      </Box>
+    );
+  }
 }

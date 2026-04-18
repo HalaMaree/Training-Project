@@ -9,7 +9,7 @@ export default function HomePage() {
 
   return (
     <div style={{ justifyContent: "center" }}>
-      <Header setSearchTerm={setSearchTerm} />
+      <Header setSearchTerm={setSearchTerm} page="home" />
       <Filters
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
